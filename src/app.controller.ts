@@ -8,11 +8,12 @@ export class AppController {
 
   @Get('*')
   async getHello(@Res() res: Response, @Req() req: Request) {
-    const { url } = req;
+    const { url, query } = req;
     if (url === '/') return this.appService.fetchIndex(url, res);
     if (url.endsWith('.js')) return this.appService.fetchJsModule(url, res);
     if (url.startsWith('/@modules/'))
       return this.appService.fetchBareModule(url, res);
+    if (url.indexOf('.vue') !== -1) return this.appService.fetchVueSfc(url, query, res);
 
     res.send();
     return res;
